@@ -1,4 +1,4 @@
-package com.strn;
+package com.strn.toast;
 
 import android.widget.Toast;
 

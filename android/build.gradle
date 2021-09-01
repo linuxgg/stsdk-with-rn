@@ -36,3 +36,7 @@ allprojects {
         maven { url 'https://www.jitpack.io' }
     }
 }
+
+ext {
+    st_sdk_version = "4.0.0"
+}

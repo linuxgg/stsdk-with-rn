@@ -27,8 +27,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import Toast from './js/Toast';
-
+import STScan from "./js/Scan"
 
 const Section = ({ children, title }): Node => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -57,7 +56,7 @@ const Section = ({ children, title }): Node => {
 };
 
 function startAuth() {
-  Toast.show("start to auth", Toast.SHORT)
+  STScan.start()
 }
 
 const App: () => Node = () => {
@@ -81,7 +80,7 @@ const App: () => Node = () => {
           <Section title="Demo">
             Click button to start auth
           </Section>
-          <Button title="start auth" onPress={() => {
+          <Button title="1. start auth in normal way" onPress={() => {
             startAuth()
           }} />
         </View>
