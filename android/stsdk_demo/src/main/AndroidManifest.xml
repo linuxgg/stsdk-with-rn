@@ -2,4 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.scantrust.sdk.stsdk_demo">
 
+    <application >
+        <activity
+            android:name="com.scantrust.sdk.stsdk_demo.ScanActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+    </application>
+
 </manifest>
