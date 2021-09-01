@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.library'
 }
-
+apply plugin: 'kotlin-android'
 
 repositories {
     maven {
@@ -11,6 +11,7 @@ repositories {
             password = "${artifactory_password}"
         }
     }
+    mavenCentral()
 }
 
 android {
@@ -32,17 +33,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
 }
 
 dependencies {
-
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //st sdk
+    implementation "com.scantrust.mobile:sdk-consumer:${rootProject.ext.st_sdk_version}"
+
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
 }
