@@ -78,8 +78,8 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            test 2
+          <Section title="Demo">
+            Click button to start auth
           </Section>
           <Button title="start auth" onPress={() => {
             startAuth()
