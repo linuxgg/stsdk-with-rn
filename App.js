@@ -80,7 +80,7 @@ const App: () => Node = () => {
           <Section title="Demo">
             Click button to start auth
           </Section>
-          <Button title="1. start auth in normal way" onPress={() => {
+          <Button title="1. start auth by intent to call an activity" onPress={() => {
             startAuth()
           }} />
         </View>

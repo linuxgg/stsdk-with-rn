@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,10 +25,14 @@ import androidx.core.content.ContextCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.scantrust.mobile.android_sdk.camera.config.ConsumerParams;
 import com.scantrust.mobile.android_sdk.controllers.DoublePingFlowController;
+import com.scantrust.mobile.android_sdk.core.CodeData2D;
 import com.scantrust.mobile.android_sdk.core.FrameData;
+import com.scantrust.mobile.android_sdk.def.CodeOrigin;
 import com.scantrust.mobile.android_sdk.def.CodeSpecialState;
+import com.scantrust.mobile.android_sdk.def.CodeState;
 import com.scantrust.mobile.android_sdk.def.DoublePingState;
 import com.scantrust.mobile.android_sdk.def.MatcherResultBase;
+import com.scantrust.mobile.android_sdk.def.ProcessingStatus;
 import com.scantrust.mobile.android_sdk.util.BaseMatcher;
 import com.scantrust.mobile.android_sdk.util.ModelSettingsManager;
 import com.scantrust.mobile.android_sdk.util.STRegularMatcher;
@@ -156,7 +161,48 @@ public class ScanActivity extends AppCompatActivity {
 
         @Override
         public void onCameraResult(FrameData frameData, DoublePingState doublePingState) {
-            Log.d(TAG, "scanning");
+            if (frameData == null
+                    || frameData.getScanningContext() == null
+                    || frameData.getRelevantCodeData() == null
+                    || frameData.getRelevantCodeData().getState() == null
+            ) {
+                return;
+            }
+
+            switch (frameData.getScanningContext()) {
+                case AUTH:
+                    switch (frameData.getProcessingStatus()) {
+                        case COMPLETED:
+                            showResult(frameData.getRelevantCodeData());
+                            break;
+                        default:
+                            break;
+
+                    }
+                    break;
+
+                case CONTENT:
+                default:
+                    CodeState tempCodeState = frameData.getRelevantCodeData().getState();
+
+                    if (tempCodeState == CodeState.NOT_PROPRIETARY || tempCodeState == CodeState.NO_AUTH) {
+                        showResult(frameData.getRelevantCodeData());
+                    } else {
+                        if (frameData.getProcessingStatus() == ProcessingStatus.UNSUPPORTED) {
+                            switch (tempCodeState) {
+                                case OK:
+                                case NOT_PARAMETRIZED:
+                                    showResult(frameData.getRelevantCodeData());
+                                    break;
+                                case UNREADABLE:
+                                default:
+                                    break;
+                            }
+
+                        }
+                    }
+                    break;
+            }
         }
 
         @Override
@@ -184,4 +230,11 @@ public class ScanActivity extends AppCompatActivity {
 
         }
     };
+
+    private void showResult(CodeData2D result) {
+        Toast.makeText(ScanActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+
 }
